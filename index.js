@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 const app = express();
 const port = 5000;
 
@@ -19,26 +20,33 @@ async function run() {
         const database = client.db('Tour_package');
         const serviceCollection = database.collection('packages');
         const userCollection = database.collection('users');
-        //get service;
+        //get package;
         app.get('/packages', async (req, res) => {
             const query = {};
             const cursor = serviceCollection.find(query);
             const packages = await cursor.toArray();
             res.send(packages);
         })
-        //post user
+        //post orders;
         app.post('/users', async (req, res) => {
             const user = req.body;
             console.log(req.body)
             const result = await userCollection.insertOne(user);
             res.json(result);
         });
-        //get user
+        //get orders;
         app.get('/users', async (req, res) => {
             const query = {};
             const cursor = userCollection.find(query);
             const users = await cursor.toArray();
             res.send(users);
+        });
+        //delete orders;
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await userCollection.deleteOne(query);
+            res.json(result);
         })
     }
     finally {
