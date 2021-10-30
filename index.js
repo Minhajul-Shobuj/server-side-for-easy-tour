@@ -32,6 +32,13 @@ async function run() {
             console.log(req.body)
             const result = await userCollection.insertOne(user);
             res.json(result);
+        });
+        //get user
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const cursor = userCollection.find(query);
+            const users = await cursor.toArray();
+            res.send(users);
         })
     }
     finally {
