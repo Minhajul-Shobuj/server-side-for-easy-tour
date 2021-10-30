@@ -30,7 +30,6 @@ async function run() {
         //post orders;
         app.post('/users', async (req, res) => {
             const user = req.body;
-            console.log(req.body)
             const result = await userCollection.insertOne(user);
             res.json(result);
         });
