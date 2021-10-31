@@ -27,6 +27,12 @@ async function run() {
             const packages = await cursor.toArray();
             res.send(packages);
         })
+        //post package;
+        app.post('/packages', async (req, res) => {
+            const package = req.body;
+            const result = await serviceCollection.insertOne(package);
+            res.json(result);
+        });
         //post orders;
         app.post('/users', async (req, res) => {
             const user = req.body;
